@@ -25,6 +25,8 @@ module delta2_module (
         else begin
             if(step != 4'd0) begin
                 if(controller == 4'd8) begin
+                    //dcda2 = (mul1 + mul2 + mul3 + mul4)
+                    //delta2 = dcda2*dadz
                     temp <= (mul1 + mul2 + mul3 + mul4)* dadz;
                 end
                 else temp <= temp;

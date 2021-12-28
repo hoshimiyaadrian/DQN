@@ -3,7 +3,10 @@ module Backward (
     clk, rst, 
     
     //control
-    step, controller,
+    step, controller, st, st1,
+
+    //action
+    act,
 
     //a3
     a3_0, a3_1, a3_2, a3_3,
@@ -16,9 +19,6 @@ module Backward (
     w3_1_0, w3_1_1, w3_1_2, w3_1_3, w3_1_4, 
     w3_2_0, w3_2_1, w3_2_2, w3_2_3, w3_2_4,
     w3_3_0, w3_3_1, w3_3_2, w3_3_3, w3_3_4,
-    
-    //data_in
-    data_in,
 
 //output
     //delta w3
@@ -47,15 +47,15 @@ module Backward (
 );
 
     input clk, rst;
-    input [3:0] step, controller;
+    input [1:0] act;
+    input [3:0] step, controller, st, st1;
     input signed [15:0] a3_0, a3_1, a3_2, a3_3;
     input signed [15:0] a2_0, a2_1, a2_2, a2_3, a2_4;
-    input signed [15:0] t_1, t_2, t_3;
-    input signed [15:0] w3_0_0, w3_0_1, w3_0_2, w3_0_3, w3_0_4, 
-                        w3_1_0, w3_1_1, w3_1_2, w3_1_3, w3_1_4,
-                        w3_2_0, w3_2_1, w3_2_2, w3_2_3, w3_2_4,
-                        w3_3_0, w3_3_1, w3_3_2, w3_3_3, w3_3_4;
-    input signed [15:0] data_in;
+    input signed [15:0] w3_0_0, w3_1_0, w3_2_0, w3_3_0,
+                        w3_0_1, w3_1_1, w3_2_1, w3_3_1,
+                        w3_0_2, w3_1_2, w3_2_2, w3_3_2,
+                        w3_0_3, w3_1_3, w3_2_3, w3_3_3,
+                        w3_0_4, w3_1_4, w3_2_4, w3_3_4;
     output signed [15:0] deltaw3_0_0, deltaw3_0_1, deltaw3_0_2, deltaw3_0_3, deltaw3_0_4,
                         deltaw3_1_0, deltaw3_1_1, deltaw3_1_2, deltaw3_1_3, deltaw3_1_4,
                         deltaw3_2_0, deltaw3_2_1, deltaw3_2_2, deltaw3_2_3, deltaw3_2_4,
@@ -73,202 +73,132 @@ module Backward (
     output signed [15:0] deltab3_0, deltab3_1, deltab3_2, deltab3_3;
     output signed [15:0] deltab2_0, deltab2_1, deltab2_2, deltab2_3, deltab2_4;
 
-endmodule
-
-//dadz is a module that generates differential of activation function
-//dadz = (1-a)*a where a is sigmoid function
-module dadz_module (
-    clk, rst, a, step, controller, dadz
-);
-    input  clk, rst;
-    input signed [15:0] a;
-    input [3:0] step, controller;
-    output signed [15:0] dadz;
-
-    reg signed [31:0] temp;
-    parameter [15:0] one_representation = 16'b000001_0000000000;
-
-    always @(posedge clk ) begin
-        if(rst) begin
-            temp = 31'd0;
-        end
-        else begin
-            if(step != 4'd0) begin
-                if(controller == 4'd6) begin //need to check timing diagram again
-                    temp = (one_representation - a) * a;
-                end
-                else temp = temp;
-            end
-            else temp = temp;
-        end
-    end
-
-    assign  dadz = temp[25:10];
-endmodule
-
-////////////////////////////////////////////////////
-
-//delta3 is a module that generates error of output hidden-output layer
-module delta3_module (
-    clk, rst, step, controller, a, t, dadz, delta3
-);
-    input clk, rst;
-    input [3:0] step, controller;
-    input signed [15:0] a;
-    input signed [15:0] t;
-    input signed [15:0] dadz;
-    output signed [15:0] delta3;
-
-    reg signed [31:0] temp;
-
-    always @(posedge clk ) begin
-        if(rst) begin
-            temp = 31'd0;
-        end
-        else begin
-            if(step != 4'd0) begin
-                if(controller == 4'd7) begin
-                    temp <= (a - t)*dadz;
-                end
-                else temp = temp;
-            end
-            else temp = temp;
-        end
-    end
-
-    assign delta3 = temp[25:10];
-endmodule
-
-////////////////////////////////////////////////////
-
-
-
-////////////////////////////////////////////////////
-
-//dw is a module that generates new parameter for updating node weight
-module dw_module (
-    clk, rst, delta, a, dw
-);
-    input clk, rst;
-    input signed [15:0] delta, a;
-    output signed [15:0] dw;
-
-    reg signed [31:0] temp;
-
-    always @(posedge clk ) begin
-        if(rst) begin
-            temp = 31'd0;
-        end
-        else temp = delta * a;
-    end
-    assign dw = temp[25:10];
-endmodule
-
-////////////////////////////////////////////////////
-
-//dw2ram is a module that read memory to get dw2_0 to dw2_14
-//need to be checked again
-module dw2ram (
-    clk, rst, controller, data_in, 
-    dw2_0, dw2_1, dw2_2, dw2_3, dw2_4, 
-    dw2_5, dw2_6, dw2_7, dw2_8,
-);
-    input clk, rst;
-    input [3:0] controller;
-    input [15:0] data_in;
-    output [15:0] dw2_0, dw2_1, dw2_2, dw2_3, dw2_4, 
-    dw2_5, dw2_6, dw2_7, dw2_8;
-    reg [15:0] mem [0:14];
-    always @(posedge clk ) begin
-        if(rst) begin
-            mem[0] =0; 
-            mem[1] =0; 
-            mem[2] =0; 
-            mem[3] =0; 
-            mem[4] =0; 
-            mem[5] =0; 
-            mem[6] =0; 
-            mem[7] =0; 
-            mem[8] =0; 
-        end
-        else mem[controller - (4'd10)] = data_in;
-    end
-
-    assign dw2_0 = mem[0]; 
-    assign dw2_1 = mem[1]; 
-    assign dw2_2 = mem[2]; 
-    assign dw2_3 = mem[3];
-    assign dw2_4 = mem[4];
-    assign dw2_5 = mem[5]; 
-    assign dw2_6 = mem[6]; 
-    assign dw2_7 = mem[7];
-    assign dw2_8 = mem[8]; 
-endmodule
-
-////////////////////////////////////////////////////
-
-//dw3ram is a module that read memory to get dw3_0 to dw3_4
-//need to be checked again
-module dw3ram (
-    clk, rst, controller, data_in,
-    dw3_0, dw3_1, dw3_2, dw3_3, dw3_4
-);
-    input clk, rst;
-    input [4:0] controller;
-    input [15:0] data_in;
-    output [15:0] dw3_0, dw3_1, dw3_2, dw3_3, dw3_4;
-
-    reg [15:0] mem [0:4];
-    always @(posedge clk ) begin
-        if(rst) begin
-            mem[0] =0; 
-            mem[1] =0; 
-            mem[2] =0; 
-            mem[3] =0; 
-            mem[4] =0;
-        end
-        else mem[controller - (4'd10)] = data_in;
-    end
-
-    assign dw3_0 = mem[0]; 
-    assign dw3_1 = mem[1];
-    assign dw3_2 = mem[2]; 
-    assign dw3_3 = mem[3]; 
-    assign dw3_4 = mem[4];
-endmodule
-
-////////////////////////////////////////////////////
-
-//
-module dw_adder_module (
-    clk, rst, step, controller, dw, deltaw
-);
-    input clk, rst;
-    input [3:0] step, controller;
-    input signed [15:0] dw;
-    output signed [15:0] deltaw;
-
-    parameter [15:0] unit_error = -16'b000000_0001100110; //0.1
-    reg signed [31:0] delw;
-
-    always @(posedge clk ) begin
-        if(rst) begin
-            delw <= 32'd0;
-        end
-        else begin
-            if(step == 4'd1) begin
-                delw <= 32'd0;
-            end
-            else begin
-                if(controller == 4'd9) begin
-                    delw <= delw + (unit_error*dw);
-                end
-                else delw <= delw;
-            end
-        end
-    end
+    ////////////////////////////////////////////////
+    wire signed [15:0] reward;
+    wire signed [15:0] dadz2_0, dadz2_1, dadz2_2, dadz2_3, dadz2_4;
+    wire signed [15:0] a_2_0, a_2_1, a_2_2, a_2_3, a_2_4;
+    wire signed [15:0] delta3_0, delta3_1, delta3_2, delta3_4;
     
-    assign deltaw = delw[25:10];
-    
-endmodule
 
+    //a_reg_module(1) ==> dadz_module(6) =========================v
+    //                ==> reward_module(6) ==> delta3_module(7) ==> delta2 (8)
+    //                ==> Qt ================^                  ==> dcdw23 (9)
+    //a_3st1          ==> maxQt1(6) =========^
+    
+    //delta2 (8) ==> dcdw12 (9) ==> dw db (10)
+
+    //a_reg_module
+    //////////////////////////////////////
+    ////////NOT YET
+    /////////////////////////////////////
+
+    //reward_module ==> 1 module
+    reward_module rewardmodule(clk, st, st1, step, reward);
+
+    //dadz_module ==> 5 module
+    //there is only dadz2 since outfunc is linear
+    //matlab example for dadz2: 
+    //0.22990627
+    //0.237164279
+    //0.208961422
+    //0.200132191
+    //0.24395663
+    dadz_module dadz2_0_module(
+        clk, rst, step, controller, a_2_0, dadz2_0
+    );
+    dadz_module dadz2_1_module(
+        clk, rst, step, controller, a_2_1, dadz2_1
+    );
+    dadz_module dadz2_2_module(
+        clk, rst, step, controller, a_2_2, dadz2_2
+    );
+    dadz_module dadz2_3_module(
+        clk, rst, step, controller, a_2_3, dadz2_3
+    );
+    dadz_module dadz2_4_module(
+        clk, rst, step, controller, a_2_4, dadz2_4
+    );
+
+    //delta3_module ==> 4 module
+    //matlab example for delta3: 
+    //0
+    //0
+    //-4.974330622
+    //0
+    delta3_module delta3_0_mod(
+        clk, rst, act, step, controller, reward, maxQt1, Qt, delta3_0
+    );
+    delta3_module1 delta3_1_mod(
+        clk, rst, act, step, controller, reward, maxQt1, Qt, delta3_1
+    );
+    delta3_module2 delta3_2_mod(
+        clk, rst, act, step, controller, reward, maxQt1, Qt, delta3_2
+    );
+    delta3_module3 delta3_3_mod(
+        clk, rst, act, step, controller, reward, maxQt1, Qt, delta3_3
+    );
+
+    //dcdw23_module
+    //matlab example for dcdw23:
+    // 0	0	-1.782042232	0
+    // 0	0	-1.923599308	0
+    // 0	0	-1.479466381	0
+    // 0	0	-1.376342499	0
+    // 0	0	-2.100465254	0
+    //////////////////////////////////////
+    ////////NOT YET
+    /////////////////////////////////////
+
+    //delta2_module ==> 5 module
+    //matlab example for delta2:
+    //-0.061026997
+    //-0.677305792
+    //-0.15251602
+    //-0.586667621
+    //-0.84917142
+    delta2_module delta2_0_mod(
+        clk, rst, controller, step, 
+        w3_0_0, w3_1_0, w3_2_0, w3_3_0,
+        delta3_0, delta3_1, delta3_2, delta3_3, 
+        dadz2_0, delta2_0
+    );
+    delta2_module delta2_1_mod(
+        clk, rst, controller, step, 
+        w3_0_1, w3_1_1, w3_2_1, w3_3_1,
+        delta3_0, delta3_1, delta3_2, delta3_3, 
+        dadz2_1, delta2_1
+    );
+    delta2_module delta2_2_mod(
+        clk, rst, controller, step, 
+        w3_0_2, w3_1_2, w3_2_2, w3_3_2,
+        delta3_0, delta3_1, delta3_2, delta3_3, 
+        dadz2_2, delta2_2
+    );
+    delta2_module delta2_3_mod(
+        clk, rst, controller, step, 
+        w3_0_3, w3_1_3, w3_2_3, w3_3_3,
+        delta3_0, delta3_1, delta3_2, delta3_3, 
+        dadz2_3, delta2_3
+    );
+    delta2_module delta2_4_mod(
+        clk, rst, controller, step, 
+        w3_0_4, w3_1_4, w3_2_4, w3_3_4,
+        delta3_0, delta3_1, delta3_2, delta3_4, 
+        dadz2_4, delta2_4
+    );
+
+    //dcdw12_module
+    //matlab example for dcdw12:
+    // -0.061026997	-0.677305792	-0.15251602	-0.586667621	-0.84917142
+    // 0	         0	             0	         0	             0
+    // 0	         0           	 0	         0	             0
+    // 0	         0	             0	         0	             0
+    // 0	         0	             0	         0	             0
+    // 0	         0	             0	         0	             0
+    // 0	         0	             0	         0	             0
+    // 0	         0	             0         	 0	             0
+    // 0	         0	             0	         0	             0
+    //////////////////////////////////////
+    ////////NOT YET
+    /////////////////////////////////////
+endmodule
