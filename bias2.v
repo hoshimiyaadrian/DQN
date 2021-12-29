@@ -1,9 +1,9 @@
 module bias2 (input clk,
 			  input [3:0] ctrl, step,
 			  input signed [15:0] deltab2_1, deltab2_2, deltab2_3, deltab2_4, deltab2_5,
-			  output signed [31:0] bias2_1, bias2_2, bias2_3, bias2_4, bias2_5);
+			  output signed [15:0] bias2_1, bias2_2, bias2_3, bias2_4, bias2_5);
  
- reg signed [31:0] bias2 [0:4];
+ reg signed [15:0] bias2 [0:4];
  
  initial begin
    $readmemh("b.mem", bias2);
