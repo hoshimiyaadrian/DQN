@@ -231,10 +231,10 @@ NN hno4 (.clk(clk), .ctrl(ctrl), .in(a), .w(w3_4), .rst(rst), .bias(bias3_4), .z
 **/
 
 //Activation Function in Output Layers
-activationFunction acf_out_1 (.clk(clk), .ctrl(ctrl), .z(zout3_1), .dout(a3_1));
-activationFunction acf_out_2 (.clk(clk), .ctrl(ctrl), .z(zout3_2), .dout(a3_2));
-activationFunction acf_out_3 (.clk(clk), .ctrl(ctrl), .z(zout3_3), .dout(a3_3));
-activationFunction acf_out_4 (.clk(clk), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
+activationFunctionB acf_out_1 (.clk(clk), .ctrl(ctrl), .z(zout3_1), .dout(a3_1));
+activationFunctionB acf_out_2 (.clk(clk), .ctrl(ctrl), .z(zout3_2), .dout(a3_2));
+activationFunctionB acf_out_3 (.clk(clk), .ctrl(ctrl), .z(zout3_3), .dout(a3_3));
+activationFunctionB acf_out_4 (.clk(clk), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
 
 //Registering a3
 a_reg_module a3st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_1), .a(a3st_1));
