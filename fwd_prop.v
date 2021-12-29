@@ -140,11 +140,11 @@ NN hn5 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_5), .rst(rst), .bias(bias2_5), .z
 **/
 
 //Activation Function in Hidden Layers
-activationFunction acf1 (.ctrl(ctrl), .z(zout2_1), .dout(a2_1));
-activationFunction acf2 (.ctrl(ctrl), .z(zout2_2), .dout(a2_2));
-activationFunction acf3 (.ctrl(ctrl), .z(zout2_3), .dout(a2_3));
-activationFunction acf4 (.ctrl(ctrl), .z(zout2_4), .dout(a2_4));
-activationFunction acf5 (.ctrl(ctrl), .z(zout2_5), .dout(a2_5));
+activationFunction acf1 (.clk(clk), .ctrl(ctrl), .z(zout2_1), .dout(a2_1));
+activationFunction acf2 (.clk(clk), .ctrl(ctrl), .z(zout2_2), .dout(a2_2));
+activationFunction acf3 (.clk(clk), .ctrl(ctrl), .z(zout2_3), .dout(a2_3));
+activationFunction acf4 (.clk(clk), .ctrl(ctrl), .z(zout2_4), .dout(a2_4));
+activationFunction acf5 (.clk(clk), .ctrl(ctrl), .z(zout2_5), .dout(a2_5));
 
 //Registering a2
 a_reg_module a2st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_1), .a(a2st_1));
@@ -232,10 +232,10 @@ NN hno4 (.clk(clk), .ctrl(ctrl), .in(a), .w(w3_4), .rst(rst), .bias(bias3_4), .z
 **/
 
 //Activation Function in Output Layers
-activationFunction acf_out_1 (.ctrl(ctrl), .z(zout3_1), .dout(a3_1));
-activationFunction acf_out_2 (.ctrl(ctrl), .z(zout3_2), .dout(a3_2));
-activationFunction acf_out_3 (.ctrl(ctrl), .z(zout3_3), .dout(a3_3));
-activationFunction acf_out_4 (.ctrl(ctrl), .z(zout3_4), .dout(a3_4));
+activationFunction acf_out_1 (.clk(clk), .ctrl(ctrl), .z(zout3_1), .dout(a3_1));
+activationFunction acf_out_2 (.clk(clk), .ctrl(ctrl), .z(zout3_2), .dout(a3_2));
+activationFunction acf_out_3 (.clk(clk), .ctrl(ctrl), .z(zout3_3), .dout(a3_3));
+activationFunction acf_out_4 (.clk(clk), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
 
 //Registering a3
 a_reg_module a3st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_1), .a(a3st_1));
@@ -243,7 +243,7 @@ a_reg_module a3st_2 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a
 a_reg_module a3st_3 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_3), .a(a3st_3));
 a_reg_module a3st_4 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_4), .a(a3st_4));
 
-
+//Assign output signals
 assign a2_1out = a2_1;
 assign a2_2out = a2_2;
 assign a2_3out = a2_3;
