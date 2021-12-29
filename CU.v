@@ -4,16 +4,16 @@ module CU (
 
     input clk, rst;
     input [3:0] st1;
-    output [3:0] step, controller;
+    output [3:0] step, controller, episode;
 
     reg [3:0] step_temp, controller_temp;
-    reg [11:0] iteration_temp;
+    reg [11:0] episode_temp;
 
     always @(posedge clk ) begin
         if (rst) begin
             controller_temp <= 4'd0;
             step_temp <= 4'd0;
-            iteration_temp <= 12'd0;
+            episode_temp <= 12'd0;
         end else begin
             controller_temp <= controller_temp + 4'd1;
             if(controller_temp == 4'd9) begin
@@ -21,7 +21,7 @@ module CU (
                 step_temp <= step_temp + 4'd1;
                 if ((step_temp == 4'd15)||(st1 == 4'd9)) begin
                     step_temp <= 4'd1;
-                    iteration_temp <= iteration_temp + 12'd1;
+                    episode_temp <= episode_temp + 12'd1;
                 end
             end
         end
@@ -29,8 +29,10 @@ module CU (
 
     assign step = step_temp;
     assign controller = controller_temp;
+    assign episode = episode_temp;
 
 endmodule
+
 
 module CU_tb ();
     reg clk, rst;
