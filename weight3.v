@@ -19,10 +19,10 @@ module weight3(
  reg signed[15:0] w34[0:4]; //w^3_14, w^3_24, w^3_34, w^3_44, w^3_54
  
  initial begin
-	 $readmemh("w3_1.mem", w31);
-	 $readmemh("w3_2.mem", w32);
-	 $readmemh("w3_3.mem", w33);
-	 $readmemh("w3_4.mem", w34);
+	 $readmemb("w3_1.mem", w31);
+	 $readmemb("w3_2.mem", w32);
+	 $readmemb("w3_3.mem", w33);
+	 $readmemb("w3_4.mem", w34);
  end
  
  always @(posedge clk) begin

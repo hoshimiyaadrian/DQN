@@ -29,13 +29,13 @@ deltaw2_95,
  reg signed[15:0] w25[0:8]; //w^2_15, w^2_25, w^2_35, ... , w^2_95
  
  initial begin
-	 $readmemh("w2_1.mem", w21);
-	 $readmemh("w2_2.mem", w22);
-	 $readmemh("w2_3.mem", w23);
-	 $readmemh("w2_4.mem", w24);
-	 $readmemh("w2_5.mem", w25);
+	 $readmemb("w2_1.mem", w21);
+	 $readmemb("w2_2.mem", w22);
+	 $readmemb("w2_3.mem", w23);
+	 $readmemb("w2_4.mem", w24);
+	 $readmemb("w2_5.mem", w25);
  end
- 
+
  always @(posedge clk) begin
    if (step != 4'b0000) begin
      if (st == 4'b0001) begin
