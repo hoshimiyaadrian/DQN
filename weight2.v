@@ -1,6 +1,6 @@
 module weight2(
  input clk,
- input [3:0] ctrl, step,
+ input [3:0] st, step,
  input signed [15:0] deltaw2_11, deltaw2_12, deltaw2_13, deltaw2_14,
 deltaw2_15,
  input signed [15:0] deltaw2_21, deltaw2_22, deltaw2_23, deltaw2_24,
@@ -38,7 +38,7 @@ deltaw2_95,
  
  always @(posedge clk) begin
    if (step != 4'b0000) begin
-     if (ctrl == 4'b0001) begin
+     if (st == 4'b0001) begin
 		 w21[0] <= deltaw2_11 + w21[0];
 		 w21[1] <= deltaw2_21 + w21[1];
 		 w21[2] <= deltaw2_31 + w21[2];
@@ -197,10 +197,10 @@ deltaw2_95,
  end
 
 
-assign w2_1 = w21[ctrl];
-assign w2_2 = w22[ctrl];
-assign w2_3 = w23[ctrl];
-assign w2_4 = w24[ctrl];
-assign w2_5 = w25[ctrl];
+assign w2_1 = w21[st];
+assign w2_2 = w22[st];
+assign w2_3 = w23[st];
+assign w2_4 = w24[st];
+assign w2_5 = w25[st];
  
 endmodule
