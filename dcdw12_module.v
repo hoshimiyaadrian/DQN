@@ -23,7 +23,7 @@ module dcdw12_module (
     end
 
     //deltaw2 = dcdw12 * 0.03125
-    assign deltaw2 = {5{0},temp[25:15]} * 16'b000000_0000100000;
+    assign deltaw2 = (temp[25:10]) * 16'b000000_0000100000;
 endmodule 
 
 ////////////////////////////
