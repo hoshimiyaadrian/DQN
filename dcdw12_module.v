@@ -1,12 +1,12 @@
-// dcdw23 is a module that generates delta weight 3
-module dcdw23_module (
-    clk, rst, step, controller, a2, delta3, deltaw3
+// dcdw12 is a module that generates delta weight 2
+module dcdw12_module (
+    clk, rst, step, controller, in_layer, delta2, deltaw2
 );
     input clk, rst;
     input [3:0] step, controller;
-    input signed [15:0] a2, delta3;
-    output signed [15:0] deltaw3;
-    
+    input signed [15:0] in_layer, delta2;
+    output signed [15:0] deltaw2;
+
     reg signed [31:0] temp;
     always @(posedge clk ) begin
         if (rst) begin
@@ -14,7 +14,7 @@ module dcdw23_module (
         end else begin
             if(step != 4'd0) begin
                 if(controller == 9) begin
-                    temp <= (a2*delta3);
+                    temp <= (in_layer*delta2);
                 end
                 else temp <= temp;
             end
@@ -22,20 +22,20 @@ module dcdw23_module (
         end
     end
 
-    //deltaw3 = dcdw23 * 0.03125
-    assign deltaw3 = (temp[25:10]) * 16'b000000_0000100000;
+    //deltaw2 = dcdw12 * 0.03125
+    assign deltaw2 = {5{0},temp[25:15]} * 16'b000000_0000100000;
 endmodule 
 
 ////////////////////////////
-//test bench for dcdw23
-module dcdw23_module_tb ();
+//test bench for dcdw12
+module dcdw12_module_tb ();
     reg clk, rst;
     reg [3:0] step, controller;
-    reg signed [15:0] a2, delta3;
-    wire signed [15:0] deltaw3;
+    reg signed [15:0] in_layer, delta2;
+    wire signed [15:0] deltaw2;
 
-    dcdw23_module dcdw23_tb(
-        clk, rst, step, controller, a2, delta3, deltaw3
+    dcdw12_module dcdw12_tb(
+        clk, rst, step, controller, in_layer, delta2, deltaw2
     );
     
     initial begin 
@@ -75,12 +75,12 @@ module dcdw23_module_tb ();
     end
 
     initial begin
-        a2 = 16'b000100_0000000000;
-        delta3 = 16'b000100_0000000000;
+        in_layer = 16'b000100_0000000000;
+        delta2 = 16'b000100_0000000000;
 
         #600
-        a2 = -16'b000100_0000000000;
-        delta3 = -16'b000100_0000000000;
+        in_layer = -16'b000100_0000000000;
+        delta2 = -16'b000100_0000000000;
 
     end
 endmodule

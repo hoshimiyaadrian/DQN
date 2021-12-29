@@ -80,17 +80,12 @@ module Backward (
     wire signed [15:0] delta3_0, delta3_1, delta3_2, delta3_4;
     
 
-    //a_reg_module(1) ==> dadz_module(6) =========================v
-    //                ==> reward_module(6) ==> delta3_module(7) ==> delta2 (8)
-    //                ==> Qt ================^                  ==> dcdw23 (9)
-    //a_3st1          ==> maxQt1(6) =========^
+    //dadz_module(6) =========================v
+    //reward_module(6) ==> delta3_module(7) ==> delta2 (8)
+    //Qt(1) ================^               ==> dcdw23 (9)
+    //maxQt1(6) =========^
     
-    //delta2 (8) ==> dcdw12 (9) ==> dw db (10)
-
-    //a_reg_module
-    //////////////////////////////////////
-    ////////NOT YET
-    /////////////////////////////////////
+    //delta2 (8) ==> dcdw12 (9)
 
     //reward_module ==> 1 module
     reward_module rewardmodule(clk, st, st1, step, reward);
@@ -145,9 +140,9 @@ module Backward (
     // 0	0	-1.479466381	0
     // 0	0	-1.376342499	0
     // 0	0	-2.100465254	0
-    //////////////////////////////////////
-    ////////NOT YET
-    /////////////////////////////////////
+    dcdw23_module dcdw23_mod0_0(
+        clk, rst, step, controller, a2_0, delta3_0, deltaw3_0_0
+    );
 
     //delta2_module ==> 5 module
     //matlab example for delta2:
