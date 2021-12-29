@@ -15,16 +15,16 @@ module a_reg_module (
 
     always @(posedge clk ) begin
         if(rst) begin
-            temp = 16'd0;
+            temp <= 16'd0;
         end
         else begin
             if(step != 4'd0) begin
                 if(controller == 4'd1) begin
                     temp <= a1;
                 end
-                else temp = temp;
+                else temp <= temp;
             end
-            else temp = temp;
+            else temp <= temp;
         end
     end
 
