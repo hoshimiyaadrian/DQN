@@ -34,7 +34,7 @@ deltaw2_95,
                       w3_21out, w3_22out, w3_23out, w3_24out,
                       w3_31out, w3_32out, w3_33out, w3_34out,
                       w3_41out, w3_42out, w3_43out, w3_44out,
-                      w3_51out, w3_52out, w3_53out, w3_54out;
+                      w3_51out, w3_52out, w3_53out, w3_54out,
  output signed [15:0] a3_1out, a3_2out, a3_3out, a3_4out,
  output signed [15:0] a2st_1, a2st_2, a2st_3, a2st_4, a2st_5,
  output signed [15:0] a3st_1, a3st_2, a3st_3, a3st_4

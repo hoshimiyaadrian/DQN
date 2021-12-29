@@ -136,7 +136,7 @@ module checker (
             j_current <= 2'd1;
             st_temp <= 4'd1;
         end
-        if(controller == 4'd6) begin
+        if(controller == 4'd1) begin
             i_current <= i_next;
             j_current <= j_next;
             st_temp <= next_state;
