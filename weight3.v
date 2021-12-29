@@ -6,7 +6,11 @@ module weight3(
  input signed [15:0] deltaw3_31, deltaw3_32, deltaw3_33, deltaw3_34,
  input signed [15:0] deltaw3_41, deltaw3_42, deltaw3_43, deltaw3_44,
  input signed [15:0] deltaw3_51, deltaw3_52, deltaw3_53, deltaw3_54,
- output signed [15:0] w3_1, w3_2, w3_3, w3_4
+ output signed [15:0] w3_11, w3_12, w3_13, w3_14,
+                      w3_21, w3_22, w3_23, w3_24,
+					  w3_31, w3_32, w3_33, w3_34,
+					  w3_41, w3_42, w3_43, w3_44,
+					  w3_51, w3_52, w3_53, w3_54
  );
  
  reg signed[15:0] w31[0:4];
@@ -56,10 +60,33 @@ module weight3(
 	else begin
    end
  end
- 
-assign w3_1 = w31[ctrl];
-assign w3_2 = w32[ctrl];
-assign w3_3 = w33[ctrl];
-assign w3_4 = w34[ctrl];
- 
+
+//assign each weight to #1 output node
+assign w3_11 = w31[0];
+assign w3_21 = w31[1];
+assign w3_31 = w31[2];
+assign w3_41 = w31[3];
+assign w3_51 = w31[4];
+
+//assign each weight to #2 output node
+assign w3_12 = w32[0];
+assign w3_22 = w32[1];
+assign w3_32 = w32[2];
+assign w3_42 = w32[3];
+assign w3_52 = w32[4];
+
+//assign each weight to #3 output node
+assign w3_13 = w33[0];
+assign w3_23 = w33[1];
+assign w3_33 = w33[2];
+assign w3_43 = w33[3];
+assign w3_53 = w33[4];
+
+//assign each weight to #4 output node
+assign w3_14 = w34[0];
+assign w3_24 = w34[1];
+assign w3_34 = w34[2];
+assign w3_44 = w34[3];
+assign w3_54 = w34[4];
+
 endmodule
