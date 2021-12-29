@@ -13,10 +13,10 @@ module weight3(
 					  w3_51, w3_52, w3_53, w3_54
  );
  
- reg signed[15:0] w31[0:4];
- reg signed[15:0] w32[0:4];
- reg signed[15:0] w33[0:4];
- reg signed[15:0] w34[0:4];
+ reg signed[15:0] w31[0:4]; //w^3_11, w^3_21, w^3_31, w^3_41, w^3_51
+ reg signed[15:0] w32[0:4]; //w^3_12, w^3_22, w^3_32, w^3_42, w^3_52
+ reg signed[15:0] w33[0:4]; //w^3_13, w^3_23, w^3_33, w^3_43, w^3_53
+ reg signed[15:0] w34[0:4]; //w^3_14, w^3_24, w^3_34, w^3_44, w^3_54
  
  initial begin
 	 $readmemh("w3_1.mif", w31);
