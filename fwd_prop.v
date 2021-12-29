@@ -49,13 +49,14 @@ deltaw2_95,
                     w3_51, w3_52, w3_53, w3_54;
  wire signed [15:0] bias2_1, bias2_2, bias2_3, bias2_4, bias2_5;
  wire signed [15:0] sumA_1, sumA_2, sumA_3, sumA_4, sumA_5;
- wire signed [15:0] zout2_1, zout2_2, zout2_3, zout2_4, zout2_5;
  wire signed [15:0] a2_1, a2_2, a2_3, a2_4, a2_5;
  wire signed [15:0] a3_1, a3_2, a3_3, a3_4;
  wire signed [15:0] bias3_1, bias3_2, bias3_3, bias3_4;
- wire signed [32:0] mult_1, mult_2, mult_3, mult_4;
- wire signed [15:0] zout3_1, zout3_2, zout3_3, zout3_4;
+ wire signed [31:0] mult_1, mult_2, mult_3, mult_4;
  
+
+ reg signed [15:0] zout2_1, zout2_2, zout2_3, zout2_4, zout2_5;
+ reg signed [15:0] zout3_1, zout3_2, zout3_3, zout3_4;
 //Weight2 Block
 weight2 read_weight_2 (.clk(clk), .st(st), .step(step), .w2_1(w2_1), .w2_2(w2_2), .w2_3(w2_3), .w2_4(w2_4), .w2_5(w2_5),
  .deltaw2_11(deltaw2_11), .deltaw2_12(deltaw2_12), .deltaw2_13(deltaw2_13
@@ -91,13 +92,13 @@ always @(posedge clk)
  begin
    if (rst == 1'b1)
     begin
-	      zout2_1 <= 16'b000000_0000000000;
-          zout2_2 <= 16'b000000_0000000000;
-          zout2_3 <= 16'b000000_0000000000;
-          zout2_4 <= 16'b000000_0000000000;
-          zout2_5 <= 16'b000000_0000000000;
+      zout2_1 <= 16'b000000_0000000000;
+      zout2_2 <= 16'b000000_0000000000;
+      zout2_3 <= 16'b000000_0000000000;
+      zout2_4 <= 16'b000000_0000000000;
+      zout2_5 <= 16'b000000_0000000000;
     end
- 
+
    else
     begin
      if (step != 4'b0000)
@@ -146,11 +147,11 @@ activationFunction acf4 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_4), .dout(a
 activationFunction acf5 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_5), .dout(a2_5));
 
 //Registering a2
-a_reg_module a2st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_1), .a(a2st_1));
-a_reg_module a2st_2 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_2), .a(a2st_2));
-a_reg_module a2st_3 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_3), .a(a2st_3));
-a_reg_module a2st_4 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_4), .a(a2st_4));
-a_reg_module a2st_5 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_5), .a(a2st_5));
+a_reg_module a2st_1_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_1), .a(a2st_1));
+a_reg_module a2st_2_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_2), .a(a2st_2));
+a_reg_module a2st_3_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_3), .a(a2st_3));
+a_reg_module a2st_4_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_4), .a(a2st_4));
+a_reg_module a2st_5_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_5), .a(a2st_5));
 
 //Weight 3 Block
 weight3 read_weight_3
@@ -166,7 +167,7 @@ weight3 read_weight_3
 
 
 //BIAS3 Block
-bias3 BIAS3 (.clk(clk), .ctrl(ctrl), .sel(sel), .bias3_1(bias3_1), .bias3_2(bias3_2), .bias3_3(bias3_3), .bias3_4(bias3_4), .deltab3_1(deltab3_1), .deltab3_2(deltab3_2), .deltab3_3(deltab3_3), .deltab3_4(deltab3_4));
+bias3 BIAS3 (.clk(clk), .ctrl(ctrl), .step(step), .bias3_1(bias3_1), .bias3_2(bias3_2), .bias3_3(bias3_3), .bias3_4(bias3_4), .deltab3_1(deltab3_1), .deltab3_2(deltab3_2), .deltab3_3(deltab3_3), .deltab3_4(deltab3_4));
 
 /**
 //PS Block
@@ -237,10 +238,10 @@ activationFunctionB acf_out_3 (.clk(clk), .ctrl(ctrl), .z(zout3_3), .dout(a3_3))
 activationFunctionB acf_out_4 (.clk(clk), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
 
 //Registering a3
-a_reg_module a3st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_1), .a(a3st_1));
-a_reg_module a3st_2 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_2), .a(a3st_2));
-a_reg_module a3st_3 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_3), .a(a3st_3));
-a_reg_module a3st_4 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_4), .a(a3st_4));
+a_reg_module a3st_1_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_1), .a(a3st_1));
+a_reg_module a3st_2_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_2), .a(a3st_2));
+a_reg_module a3st_3_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_3), .a(a3st_3));
+a_reg_module a3st_4_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_4), .a(a3st_4));
 
 //Assign output signals
 assign a2_1out = a2_1;

@@ -1,5 +1,5 @@
 module CU (
-    clk, rst, step, controller, st1
+    clk, rst, st1, episode, step, controller
 );
 
     input clk, rst;
@@ -37,10 +37,10 @@ endmodule
 module CU_tb ();
     reg clk, rst;
     reg [3:0] st1;
-    wire [3:0] step, controller;
+    wire [3:0] episode, step, controller;
 
-    CU cu_tb(
-        clk, rst, step, controller, st1
+    CU cutb(
+        clk, rst, st1, episode, step, controller
     );
 
     initial begin 

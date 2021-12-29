@@ -10,7 +10,7 @@ module bias3 (input clk,
  end
  
  always @(posedge clk) begin
-   if (sel != 4'b0000) begin
+   if (step != 4'b0000) begin
 	  if (ctrl == 4'b0011) begin
 		 bias3[0] <= bias3[0] + deltab3_1;
 		 bias3[1] <= bias3[1] + deltab3_2;
