@@ -28,7 +28,7 @@ deltaw2_95,
  input signed [15:0] deltab3_1, deltab3_2, deltab3_3, deltab3_4,
  
  input signed [15:0] in,
- input [3:0] ctrl, sel,
+ input [3:0] ctrl, step, st,
  
  output signed [15:0] a2_1out, a2_2out, a2_3out, a2_4out, a2_5out,
  output signed [15:0] w3_1out, w3_2out, w3_3out, w3_4out,
@@ -47,7 +47,7 @@ deltaw2_95,
  wire signed [15:0] zout3_1, zout3_2, zout3_3, zout3_4;
  
 //Weight2 Block
-weight2 read_weight_2 (.clk(clk), .sel(sel), .ctrl(ctrl), .w2_1(w2_1), .w2_2(w2_2), .w2_3(w2_2), .w2_4(w2_3), .w2_5(w2_5),
+weight2 read_weight_2 (.clk(clk), .st(st), .step(step), .w2_1(w2_1), .w2_2(w2_2), .w2_3(w2_2), .w2_4(w2_3), .w2_5(w2_5),
  .deltaw2_11(deltaw2_11), .deltaw2_12(deltaw2_12), .deltaw2_13(deltaw2_13
 ), .deltaw2_14(deltaw2_14), .deltaw2_15(deltaw2_15),
  .deltaw2_21(deltaw2_21), .deltaw2_22(deltaw2_22), .deltaw2_23(deltaw2_23
@@ -68,14 +68,59 @@ weight2 read_weight_2 (.clk(clk), .sel(sel), .ctrl(ctrl), .w2_1(w2_1), .w2_2(w2_
 ), .deltaw2_94(deltaw2_94), .deltaw2_95(deltaw2_95));
 
 //BIAS2 Block
-bias2 BIAS2 (.clk(clk), .ctrl(ctrl), .sel(sel), .bias2_1(bias2_1), .bias2_2(bias2_2), .bias2_3(bias2_3), .bias2_4(bias2_4), .bias2_5(bias2_5), .deltab2_1(deltab2_1), .deltab2_2(deltab2_2), .deltab2_3(deltab2_3), .deltab2_4(deltab2_4), .deltab2_5(deltab2_5));
+bias2 BIAS2 (.clk(clk), .ctrl(ctrl), .step(step), .bias2_1(bias2_1), .bias2_2(bias2_2), .bias2_3(bias2_3), .bias2_4(bias2_4), .bias2_5(bias2_5), .deltab2_1(deltab2_1), .deltab2_2(deltab2_2), .deltab2_3(deltab2_3), .deltab2_4(deltab2_4), .deltab2_5(deltab2_5));
 
 //Neural from Input to Hidden Layer
+always @(posedge clk)
+ begin
+   if (rst == 1'b1)
+    begin
+	      zout2_1 <= 16'b000000_0000000000;
+          zout2_2 <= 16'b000000_0000000000;
+          zout2_3 <= 16'b000000_0000000000;
+          zout2_4 <= 16'b000000_0000000000;
+          zout2_5 <= 16'b000000_0000000000;
+    end
+ 
+   else
+    begin
+     if (step != 4'b0000)
+      begin
+        if (ctrl == 4'b0010)
+         begin
+          zout2_1 <= zout2_1 + bias2_1;
+          zout2_2 <= zout2_2 + bias2_2;
+          zout2_3 <= zout2_3 + bias2_3;
+          zout2_4 <= zout2_4 + bias2_4;
+          zout2_5 <= zout2_5 + bias2_5;
+         end
+        
+        else
+         begin
+          zout2_1 <= zout2_1;
+          zout2_2 <= zout2_2;
+          zout2_3 <= zout2_3;
+          zout2_4 <= zout2_4;
+          zout2_5 <= zout2_5;
+         end
+      end
+     else
+      begin
+          zout2_1 <= zout2_1;
+          zout2_2 <= zout2_2;
+          zout2_3 <= zout2_3;
+          zout2_4 <= zout2_4;
+          zout2_5 <= zout2_5;
+      end
+    end
+ end
+/**
 NN hn1 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_1), .rst(rst), .bias(bias2_1), .zout(zout2_1));
 NN hn2 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_2), .rst(rst), .bias(bias2_2), .zout(zout2_2));
 NN hn3 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_3), .rst(rst), .bias(bias2_3), .zout(zout2_3));
 NN hn4 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_4), .rst(rst), .bias(bias2_4), .zout(zout2_4));
 NN hn5 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_5), .rst(rst), .bias(bias2_5), .zout(zout2_5));
+**/
 
 //Activation Function in Hidden Layers
 activationFunction acf1 (.ctrl(ctrl), .z(zout2_1), .dout(a2_1));
