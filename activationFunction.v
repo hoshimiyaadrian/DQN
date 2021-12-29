@@ -1,4 +1,4 @@
-module activationFunction(clk, ctrl, z, dout);
+module activationFunction(clk, rst, ctrl, z, dout);
  input clk;
  input rst;
  input [3:0] ctrl;

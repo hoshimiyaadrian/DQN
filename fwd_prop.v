@@ -27,7 +27,6 @@ deltaw2_95,
  input signed [15:0] deltaw3_51, deltaw3_52, deltaw3_53, deltaw3_54,
  input signed [15:0] deltab3_1, deltab3_2, deltab3_3, deltab3_4,
  
- input signed [15:0] in,
  input [3:0] ctrl, step, st,
  
  output signed [15:0] a2_1out, a2_2out, a2_3out, a2_4out, a2_5out,
@@ -140,11 +139,11 @@ NN hn5 (.clk(clk), .ctrl(ctrl), .in(in), .w(w2_5), .rst(rst), .bias(bias2_5), .z
 **/
 
 //Activation Function in Hidden Layers
-activationFunction acf1 (.clk(clk), .ctrl(ctrl), .z(zout2_1), .dout(a2_1));
-activationFunction acf2 (.clk(clk), .ctrl(ctrl), .z(zout2_2), .dout(a2_2));
-activationFunction acf3 (.clk(clk), .ctrl(ctrl), .z(zout2_3), .dout(a2_3));
-activationFunction acf4 (.clk(clk), .ctrl(ctrl), .z(zout2_4), .dout(a2_4));
-activationFunction acf5 (.clk(clk), .ctrl(ctrl), .z(zout2_5), .dout(a2_5));
+activationFunction acf1 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_1), .dout(a2_1));
+activationFunction acf2 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_2), .dout(a2_2));
+activationFunction acf3 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_3), .dout(a2_3));
+activationFunction acf4 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_4), .dout(a2_4));
+activationFunction acf5 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout2_5), .dout(a2_5));
 
 //Registering a2
 a_reg_module a2st_1 (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a2_1), .a(a2st_1));
