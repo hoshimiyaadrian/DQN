@@ -58,7 +58,7 @@ deltaw2_95,
  reg signed [15:0] zout2_1, zout2_2, zout2_3, zout2_4, zout2_5;
  reg signed [15:0] zout3_1, zout3_2, zout3_3, zout3_4;
 //Weight2 Block
-weight2 read_weight_2 (.clk(clk), .st(st), .step(step), .w2_1(w2_1), .w2_2(w2_2), .w2_3(w2_3), .w2_4(w2_4), .w2_5(w2_5),
+weight2 read_weight_2 (.clk(clk), .st(st), .ctrl(ctrl), .step(step), .w2_1(w2_1), .w2_2(w2_2), .w2_3(w2_3), .w2_4(w2_4), .w2_5(w2_5),
  .deltaw2_11(deltaw2_11), .deltaw2_12(deltaw2_12), .deltaw2_13(deltaw2_13
 ), .deltaw2_14(deltaw2_14), .deltaw2_15(deltaw2_15),
  .deltaw2_21(deltaw2_21), .deltaw2_22(deltaw2_22), .deltaw2_23(deltaw2_23
@@ -232,10 +232,10 @@ NN hno4 (.clk(clk), .ctrl(ctrl), .in(a), .w(w3_4), .rst(rst), .bias(bias3_4), .z
 **/
 
 //Activation Function in Output Layers
-activationFunctionB acf_out_1 (.clk(clk), .ctrl(ctrl), .z(zout3_1), .dout(a3_1));
-activationFunctionB acf_out_2 (.clk(clk), .ctrl(ctrl), .z(zout3_2), .dout(a3_2));
-activationFunctionB acf_out_3 (.clk(clk), .ctrl(ctrl), .z(zout3_3), .dout(a3_3));
-activationFunctionB acf_out_4 (.clk(clk), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
+activationFunctionB acf_out_1 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout3_1), .dout(a3_1));
+activationFunctionB acf_out_2 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout3_2), .dout(a3_2));
+activationFunctionB acf_out_3 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout3_3), .dout(a3_3));
+activationFunctionB acf_out_4 (.clk(clk), .rst(rst), .ctrl(ctrl), .z(zout3_4), .dout(a3_4));
 
 //Registering a3
 a_reg_module a3st_1_mod (.clk(clk), .rst(rst), .step(step), .controller(ctrl), .a1(a3_1), .a(a3st_1));

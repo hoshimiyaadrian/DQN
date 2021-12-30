@@ -6,7 +6,7 @@ module bias3 (input clk,
  reg signed [15:0] bias3 [0:3];
  
  initial begin
-   $readmemh("b.mem", bias3);
+   $readmemb("b3.mem", bias3);
  end
  
  always @(posedge clk) begin

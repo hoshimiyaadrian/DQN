@@ -4,7 +4,8 @@ module CU (
 
     input clk, rst;
     input [3:0] st1;
-    output [3:0] step, controller, episode;
+    output [3:0] step, controller;
+    output [11:0] episode;
 
     reg [3:0] step_temp, controller_temp;
     reg [11:0] episode_temp;
@@ -37,7 +38,8 @@ endmodule
 module CU_tb ();
     reg clk, rst;
     reg [3:0] st1;
-    wire [3:0] episode, step, controller;
+    wire [3:0] step, controller;
+    wire [11:0] episode;
 
     CU cutb(
         clk, rst, st1, episode, step, controller

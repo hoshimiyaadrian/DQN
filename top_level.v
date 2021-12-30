@@ -2,8 +2,10 @@ module top_level (
     clk, rst
 );
     input clk, rst;
-    wire [3:0] step, controller, episode, st, st1;
-    wire signed [15:0] maxQt1;
+    wire [1:0] act;
+    wire [3:0] step, controller, st, st1;
+    wire [11:0] episode;
+    wire signed [15:0] Qt, maxQt1;
     wire signed [15:0] deltaw2_0_0, deltaw2_1_0, deltaw2_2_0, deltaw2_3_0, deltaw2_4_0,
                         deltaw2_0_1, deltaw2_1_1, deltaw2_2_1, deltaw2_3_1, deltaw2_4_1,
                         deltaw2_0_2, deltaw2_1_2, deltaw2_2_2, deltaw2_3_2, deltaw2_4_2,
@@ -86,8 +88,8 @@ fwd_prop forward_porp(
 
 Action_determiner action_determiner_mod(
     clk, rst, step, controller, episode,
-    a3st_1, a3st_2, a3st_3, a3st_4, 
-    a3_1out, a3_2out, a3_3out, a3_4out, act, st, st1, maxQt1
+    a3st_1, a3st_2, a3st_3, a3st_4,
+    a3_1out, a3_2out, a3_3out, a3_4out, act, st, st1, Qt, maxQt1
 );
 
 Backward backprop(
@@ -101,10 +103,10 @@ Backward backprop(
     act,
 
     //a3
-    a3_0, a3_1, a3_2, a3_3,
+    a3st_1, a3st_2, a3st_3, a3st_4,
 
     //a2
-    a2_0, a2_1, a2_2, a2_3, a2_4,
+    a2st_1, a2st_2, a2st_3, a2st_4, a2st_5,
     
     //weight hidden-output layer
     w3_0_0, w3_0_1, w3_0_2, w3_0_3, w3_0_4, 
@@ -113,7 +115,7 @@ Backward backprop(
     w3_3_0, w3_3_1, w3_3_2, w3_3_3, w3_3_4,
 
     //maxQt1
-    maxQt1,
+    Qt, maxQt1,
 
 //output
     //delta w3

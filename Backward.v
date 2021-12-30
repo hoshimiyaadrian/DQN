@@ -21,7 +21,7 @@ module Backward (
     w3_3_0, w3_3_1, w3_3_2, w3_3_3, w3_3_4,
 
     //maxQt1
-    maxQt1,
+    Qt, maxQt1,
 
 //output
     //delta w3
@@ -52,7 +52,7 @@ module Backward (
     input clk, rst;
     input [1:0] act;
     input [3:0] step, controller, st, st1;
-    input signed [15:0] maxQt1;
+    input signed [15:0] Qt, maxQt1;
     input signed [15:0] a3_0, a3_1, a3_2, a3_3;
     input signed [15:0] a2_0, a2_1, a2_2, a2_3, a2_4;
     input signed [15:0] w3_0_0, w3_1_0, w3_2_0, w3_3_0,
