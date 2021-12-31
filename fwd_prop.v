@@ -53,7 +53,7 @@ deltaw2_95,
  wire signed [15:0] a3_1, a3_2, a3_3, a3_4;
  wire signed [15:0] bias3_1, bias3_2, bias3_3, bias3_4;
  wire signed [31:0] mult_1, mult_2, mult_3, mult_4;
- 
+ wire signed [15:0] sumB_1, sumB_2, sumB_3, sumB_4;
 
  reg signed [15:0] zout2_1, zout2_2, zout2_3, zout2_4, zout2_5;
  reg signed [15:0] zout3_1, zout3_2, zout3_3, zout3_4;
@@ -277,4 +277,131 @@ assign w3_53out = w3_53;
 assign w3_54out = w3_54;
 
 
+endmodule
+
+
+module fwd_tb();
+ reg clk, rst;
+ reg signed [15:0] deltaw2_11, deltaw2_12, deltaw2_13, deltaw2_14,
+deltaw2_15;
+ reg signed [15:0] deltaw2_21, deltaw2_22, deltaw2_23, deltaw2_24,
+deltaw2_25;
+ reg signed [15:0] deltaw2_31, deltaw2_32, deltaw2_33, deltaw2_34,
+deltaw2_35;
+ reg signed [15:0] deltaw2_41, deltaw2_42, deltaw2_43, deltaw2_44,
+deltaw2_45;
+ reg signed [15:0] deltaw2_51, deltaw2_52, deltaw2_53, deltaw2_54,
+deltaw2_55;
+ reg signed [15:0] deltaw2_61, deltaw2_62, deltaw2_63, deltaw2_64,
+deltaw2_65;
+ reg signed [15:0] deltaw2_71, deltaw2_72, deltaw2_73, deltaw2_74,
+deltaw2_75;
+ reg signed [15:0] deltaw2_81, deltaw2_82, deltaw2_83, deltaw2_84,
+deltaw2_85;
+ reg signed [15:0] deltaw2_91, deltaw2_92, deltaw2_93, deltaw2_94,
+deltaw2_95;
+ reg signed [15:0] deltab2_1, deltab2_2, deltab2_3, deltab2_4, deltab2_5;
+ reg signed [15:0] deltaw3_11, deltaw3_12, deltaw3_13, deltaw3_14;
+ reg signed [15:0] deltaw3_21, deltaw3_22, deltaw3_23, deltaw3_24;
+ reg signed [15:0] deltaw3_31, deltaw3_32, deltaw3_33, deltaw3_34;
+ reg signed [15:0] deltaw3_41, deltaw3_42, deltaw3_43, deltaw3_44;
+ reg signed [15:0] deltaw3_51, deltaw3_52, deltaw3_53, deltaw3_54;
+ reg signed [15:0] deltab3_1, deltab3_2, deltab3_3, deltab3_4;
+ 
+ reg [3:0] controller, step, st;
+ 
+ wire signed [15:0] a2_1out, a2_2out, a2_3out, a2_4out, a2_5out;
+ wire signed [15:0] w3_11out, w3_12out, w3_13out, w3_14out,
+                      w3_21out, w3_22out, w3_23out, w3_24out,
+                      w3_31out, w3_32out, w3_33out, w3_34out,
+                      w3_41out, w3_42out, w3_43out, w3_44out,
+                      w3_51out, w3_52out, w3_53out, w3_54out;
+ wire signed [15:0] a3_1out, a3_2out, a3_3out, a3_4out;
+ wire signed [15:0] a2st_1, a2st_2, a2st_3, a2st_4, a2st_5;
+ wire signed [15:0] a3st_1, a3st_2, a3st_3, a3st_4;
+
+ fwd_prop forward_tb(
+	clk, rst, deltaw2_11, deltaw2_12, deltaw2_13, deltaw2_14, deltaw2_15,
+	deltaw2_21, deltaw2_22, deltaw2_23, deltaw2_24, deltaw2_25,
+	deltaw2_31, deltaw2_32, deltaw2_33, deltaw2_34, deltaw2_35,
+	deltaw2_41, deltaw2_42, deltaw2_43, deltaw2_44, deltaw2_45,
+	deltaw2_51, deltaw2_52, deltaw2_53, deltaw2_54, deltaw2_55,
+	deltaw2_61, deltaw2_62, deltaw2_63, deltaw2_64, deltaw2_65,
+	deltaw2_71, deltaw2_72, deltaw2_73, deltaw2_74, deltaw2_75,
+	deltaw2_81, deltaw2_82, deltaw2_83, deltaw2_84, deltaw2_85,
+	deltaw2_91, deltaw2_92, deltaw2_93, deltaw2_94, deltaw2_95,
+	deltab2_1, deltab2_2, deltab2_3, deltab2_4, deltab2_5,
+	deltaw3_11, deltaw3_12, deltaw3_13, deltaw3_14,
+	deltaw3_21, deltaw3_22, deltaw3_23, deltaw3_24,
+	deltaw3_31, deltaw3_32, deltaw3_33, deltaw3_34,
+	deltaw3_41, deltaw3_42, deltaw3_43, deltaw3_44,
+	deltaw3_51, deltaw3_52, deltaw3_53, deltaw3_54,
+	deltab3_1, deltab3_2, deltab3_3, deltab3_4,
+	controller, step, st,
+	a2_1out, a2_2out, a2_3out, a2_4out, a2_5out,
+	w3_11out, w3_12out, w3_13out, w3_14out,
+	w3_21out, w3_22out, w3_23out, w3_24out,
+	w3_31out, w3_32out, w3_33out, w3_34out,
+	w3_41out, w3_42out, w3_43out, w3_44out,
+	w3_51out, w3_52out, w3_53out, w3_54out,
+	a3_1out, a3_2out, a3_3out, a3_4out,
+	a2st_1, a2st_2, a2st_3, a2st_4, a2st_5,
+	a3st_1, a3st_2, a3st_3, a3st_4
+	);
+	
+	initial begin
+	 clk = 1'b1;
+	 forever #50 clk = ~clk;
+   end
+	
+	initial begin
+        rst = 1;
+        step = 4'd0;
+        controller = 4'd0;
+		  st = 4'd0;
+        #100
+        rst = 0;
+        controller = 4'd1;
+        #100
+        controller = 4'd2;
+        #100
+        controller = 4'd3;
+        #100
+        controller = 4'd4;
+        #100
+        controller = 4'd5;
+        #100
+        controller = 4'd6;
+        #100
+        controller = 4'd7;
+        #100
+        controller = 4'd8;
+        #100
+        controller = 4'd9;
+        #100
+		  step = 4'd1;
+        controller = 4'd1;
+		  st = 4'd4;
+        #100
+        controller = 4'd2;
+		  #100
+		  controller = 4'd3;
+		  #100
+		  controller = 4'd4;
+		  #100
+        controller = 4'd5;
+        #100
+        controller = 4'd6;
+        #100
+        controller = 4'd7;
+        #100
+        controller = 4'd8;
+        #100
+        controller = 4'd9;
+		  #100
+		  step = 4'd2;
+		  controller = 4'd1;
+		  st = 4'd5;
+		  #500;
+    end
 endmodule

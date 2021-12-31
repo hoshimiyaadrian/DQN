@@ -5,9 +5,10 @@ module db_module (
     input [3:0] step, controller;
     input signed [15:0] delta;
     output signed [15:0] deltab;
-
+	 
     reg signed [31:0] temp;
-    always @(posedge clk ) begin
+    
+	 always @(posedge clk ) begin
         if (rst) begin
             temp <= 32'd0;
         end else begin
@@ -21,5 +22,5 @@ module db_module (
         end
     end
     //deltab = delta * 0.03125
-    assign deltaw3 = (temp[25:10]) * 16'b000000_0000100000;
+    assign deltab = (temp[25:10]) * 16'b000000_0000100000;
 endmodule

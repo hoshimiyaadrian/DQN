@@ -264,7 +264,7 @@ module Backward (
     // 0	         0	             0	         0	             0
     // 0	         0	             0	         0	             0
     // 0	         0	             0	         0	             0
-    // 0	         0	             0         	 0	             0
+    // 0	         0	             0         	0	             0
     // 0	         0	             0	         0	             0
     dcdw12_module dcdw12_mod0_0(
         clk, rst, step, controller, in_layer1, delta2_0, deltaw2_0_0
@@ -378,6 +378,34 @@ module Backward (
         clk, rst, step, controller, in_layer9, delta2_3, deltaw2_3_8
     );
     /////////////////////////////////////
+	 dcdw12_module dcdw12_mod4_0(
+        clk, rst, step, controller, in_layer1, delta2_4, deltaw2_4_0
+    );
+    dcdw12_module dcdw12_mod4_1(
+        clk, rst, step, controller, in_layer2, delta2_4, deltaw2_4_1
+    );
+    dcdw12_module dcdw12_mod4_2(
+        clk, rst, step, controller, in_layer3, delta2_4, deltaw2_4_2
+    );
+    dcdw12_module dcdw12_mod4_3(
+        clk, rst, step, controller, in_layer4, delta2_4, deltaw2_4_3
+    );
+    dcdw12_module dcdw12_mod4_4(
+        clk, rst, step, controller, in_layer5, delta2_4, deltaw2_4_4
+    );
+    dcdw12_module dcdw12_mod4_5(
+        clk, rst, step, controller, in_layer6, delta2_4, deltaw2_4_5
+    );
+    dcdw12_module dcdw12_mod4_6(
+        clk, rst, step, controller, in_layer7, delta2_4, deltaw2_4_6
+    );
+    dcdw12_module dcdw12_mod4_7(
+        clk, rst, step, controller, in_layer8, delta2_4, deltaw2_4_7
+    );
+    dcdw12_module dcdw12_mod4_8(
+        clk, rst, step, controller, in_layer9, delta2_4, deltaw2_4_8
+    );
+	 /////////////////////////////////////
 
     //db2
     db_module db2_0(
