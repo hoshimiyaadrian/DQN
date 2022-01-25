@@ -13,7 +13,7 @@ module dcdw12_module (
             temp <= 32'd0;
         end else begin
             if(step != 4'd0) begin
-                if(controller == 9) begin
+                if(controller == 4'd9) begin
                     temp <= (in_layer*delta2);
                 end
                 else temp <= temp;

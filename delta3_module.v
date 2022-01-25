@@ -119,6 +119,7 @@ module delta3_module2 (
     end
 
     assign delta3 = temp[25:10];
+
 endmodule
 
 //act == 3

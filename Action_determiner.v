@@ -13,8 +13,9 @@ module Action_determiner (
     output [3:0] st, st1;
     output [15:0] Qt, maxQt1;
 
+    reg [1:0] act_reg;
     wire comparison_result;
-    wire [1:0] qmax_act, random_act;
+    wire [1:0] act_wire, qmax_act, random_act;
 
     qnext_max qnex_max_mod(
         Qst1_0, Qst1_1, Qst1_2, Qst1_3, maxQt1
@@ -27,12 +28,38 @@ module Action_determiner (
     );
 
     assign act = comparison_result? qmax_act : random_act;
+    // assign act_wire = comparison_result? qmax_act : random_act;
+    // always @(posedge clk ) begin
+    //     if (rst) begin
+    //         act_reg <= 2'd0;
+    //     end else begin
+    //        if(controller == 4'd6) begin
+    //             act_reg <= act_wire;
+    //         end else begin
+    //             act_reg <= act_reg;
+    //         end 
+    //     end
+    // end
+    // assign act = (controller == 4'd6)? act_wire : act_reg;
 
     checker check(
         clk, rst, act, step, controller, st, st1
     );
 
 endmodule
+////////////////////////////////////////////////////
+
+module Action_determiner_tb ();
+    reg clk, rst;
+    reg [3:0] step, controller;
+    reg [11:0] episode;
+    reg [15:0] Qst_0, Qst_1, Qst_2, Qst_3;
+    reg [15:0] Qst1_0, Qst1_1, Qst1_2, Qst1_3;
+    wire [1:0] act;
+    wire [3:0] st, st1;
+    wire [15:0] Qt, maxQt1;
+endmodule
+
 ////////////////////////////////////////////////////
 //qnext_max
 module qnext_max (
@@ -114,7 +141,7 @@ module random_action(
 
     //if episode < random, the action will be taken is random_act
     //else, the action will be taken is qmax_act
-    assign comparison_result = (episode < random)? 1'b1 : 1'b0;
+    assign comparison_result = (episode < random)? 1'b0 : 1'b1;
 
     //assign random_act by taking 2 LSB of random number
     assign random_act = random[1:0];
@@ -140,15 +167,15 @@ module checker (
 
     //act 0 go right, act 2 go left
     //act 1 go up, act 3 go down
-    assign i_current_moved = ((step == 4'd15) || rst)? 3'd1 : ((act == 2'd1)? (i_current - 3'd1) : ((act == 2'd3)? (i_current + 3'd1) : i_current));
-    assign j_current_moved = ((step == 4'd15) || rst)? 3'd1 : ((act == 2'd2)? (j_current - 3'd1) : ((act == 2'd0)? (j_current + 3'd1) : j_current));
+    assign i_current_moved = ((step == 4'd14) || rst)? 3'd1 : ((act == 2'd1)? (i_current - 3'd1) : ((act == 2'd3)? (i_current + 3'd1) : i_current));
+    assign j_current_moved = ((step == 4'd14) || rst)? 3'd1 : ((act == 2'd2)? (j_current - 3'd1) : ((act == 2'd0)? (j_current + 3'd1) : j_current));
 
     //validation
     assign i_new = ((i_current_moved == 3'd0) || (i_current_moved == 3'd4))? i_current : i_current_moved;
     assign j_new = ((j_current_moved == 3'd0) || (j_current_moved == 3'd4))? j_current : j_current_moved;
 
-    assign i_next = ((step == 4'd15) || rst)? initial_pos : i_new;
-    assign j_next = ((step == 4'd15) || rst)? initial_pos : j_new;
+    assign i_next = ((step == 4'd14) || rst)? initial_pos : i_new;
+    assign j_next = ((step == 4'd14) || rst)? initial_pos : j_new;
 
     assign next_state = ((i_next - 1)*3) + j_next;
 
@@ -165,7 +192,8 @@ module regpos (
     clk, rst, controller, din, dout
 );
     input clk, rst;
-    input [3:0] controller, din;
+    input [1:0] din;
+    input [3:0] controller;
     output reg [1:0] dout;
 
     always @(posedge clk ) begin

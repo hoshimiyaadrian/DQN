@@ -17,11 +17,11 @@ module CU (
             episode_temp <= 12'd0;
         end else begin
             controller_temp <= controller_temp + 4'd1;
-            if(controller_temp == 4'd9) begin
+            if(controller_temp == 4'd10) begin
                 controller_temp <= 4'd1;
                 step_temp <= step_temp + 4'd1;
                 if ((step_temp == 4'd15)||(st1 == 4'd9)) begin
-                    step_temp <= 4'd1;
+                    step_temp <= 4'd0;
                     episode_temp <= episode_temp + 12'd1;
                 end
             end
